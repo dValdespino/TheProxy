@@ -49,15 +49,6 @@ func serveReverseProxy(res http.ResponseWriter, req *http.Request) {
 	proxy.ServeHTTP(res, req)
 }
 
-//////////////////////////////////////////////////////////////////
-//USAGE INFO:
-//
-// -user User name
-// -passwd Password
-// -proxy The Proxy's address
-// -port The Proxy's port
-// -protocol The Proxy's protocol (might be http or http)
-//////////////////////////////////////////////////////////////////
 
 func main() {
 	uname := flag.String("user", "dvaldespino", "User name")
@@ -66,7 +57,23 @@ func main() {
 	proxy_port := flag.Int("port", 3128, "Proxy port")
 	protocol := flag.String("protocol", "http", "Proxy protocol(http or https)")
 
+	flag.Usage=func(){
+		fmt.Println(`
+The Proxy
+---------
+
+ USAGE INFO:
+  TheProxy [-user username] [-passwd password] [-proxy proxy_addr] [-port proxy_port] [-protocol protocol]
+
+ -user User name
+ -passwd Password
+ -proxy The Proxy's address
+ -port The Proxy's port
+ -protocol The Proxy's protocol (might be http or http)
+ `)		
+	}
 	flag.Parse()
+
 
 	full_url := fmt.Sprintf("%s://%s:%s@%s:%d", *protocol, *uname, *passwd, *proxy_addr, *proxy_port)
 	public_url := fmt.Sprintf("%s://%s:******@%s:%d", *protocol, *uname, *proxy_addr, *proxy_port)
